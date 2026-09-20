@@ -14,7 +14,95 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      reviews: {
+        Row: {
+          created_at: string
+          decision: string
+          id: string
+          reviewer_id: string
+          transaction_id: string
+        }
+        Insert: {
+          created_at?: string
+          decision: string
+          id?: string
+          reviewer_id: string
+          transaction_id: string
+        }
+        Update: {
+          created_at?: string
+          decision?: string
+          id?: string
+          reviewer_id?: string
+          transaction_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reviews_transaction_id_fkey"
+            columns: ["transaction_id"]
+            isOneToOne: true
+            referencedRelation: "transactions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      settings: {
+        Row: {
+          key: string
+          value: string
+        }
+        Insert: {
+          key: string
+          value: string
+        }
+        Update: {
+          key?: string
+          value?: string
+        }
+        Relationships: []
+      }
+      transactions: {
+        Row: {
+          amount: number
+          consecutive: boolean
+          created_at: string
+          dest_old_balance: number
+          fraud_score: number
+          hour: number
+          id: string
+          model_version: string
+          new_balance: number
+          old_balance: number
+          type: string
+        }
+        Insert: {
+          amount: number
+          consecutive?: boolean
+          created_at?: string
+          dest_old_balance?: number
+          fraud_score?: number
+          hour?: number
+          id?: string
+          model_version?: string
+          new_balance?: number
+          old_balance?: number
+          type: string
+        }
+        Update: {
+          amount?: number
+          consecutive?: boolean
+          created_at?: string
+          dest_old_balance?: number
+          fraud_score?: number
+          hour?: number
+          id?: string
+          model_version?: string
+          new_balance?: number
+          old_balance?: number
+          type?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
