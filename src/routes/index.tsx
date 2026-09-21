@@ -191,8 +191,9 @@ function LiveConsole() {
           </p>
         </div>
         <SimulatedNote>
-          The stream on this page is generated demo data, not real customer transactions. Scores
-          come from a clearly labelled demo rule unless the Flask + XGBoost service is connected.
+          {signedIn
+            ? "Demo data: the stored stream is generated demo data, not real customer transactions. Scores come from a clearly labelled demo rule unless the Flask + XGBoost service is connected."
+            : "Demo data: this public view runs on a stream generated in your browser and reads nothing from the database. Sign in as staff to see stored transactions and record review decisions."}
         </SimulatedNote>
       </section>
 
