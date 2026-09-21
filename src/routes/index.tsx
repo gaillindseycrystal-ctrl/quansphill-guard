@@ -73,8 +73,15 @@ function LiveConsole() {
   const [threshold, setThreshold] = useState(0.5);
   const [selected, setSelected] = useState<Txn | null>(null);
 
+  const signedIn = !!user;
+
+  // Public visitors never read stored data: the console runs on a demo stream
+  // generated in the browser. Stored transactions are staff-only.
+  const demoRows = useMemo(() => generateDemoStream(), []);
+
   const txns = useQuery({
     queryKey: ["transactions"],
+    enabled: signedIn,
     queryFn: async () => {
       const { data, error } = await supabase
         .from("transactions")
@@ -88,6 +95,7 @@ function LiveConsole() {
 
   const reviews = useQuery({
     queryKey: ["reviews"],
+    enabled: signedIn,
     queryFn: async () => {
       const { data, error } = await supabase.from("reviews").select("transaction_id, decision");
       if (error) throw error;
@@ -96,6 +104,7 @@ function LiveConsole() {
   });
 
   useEffect(() => {
+    if (!signedIn) return;
     const channel = supabase
       .channel("live-console")
       .on("postgres_changes", { event: "*", schema: "public", table: "transactions" }, () => {
@@ -108,9 +117,9 @@ function LiveConsole() {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [queryClient]);
+  }, [queryClient, signedIn]);
 
-  const rows = txns.data ?? [];
+  const rows: Txn[] = signedIn ? (txns.data ?? []) : (demoRows as unknown as Txn[]);
   const reviewMap = useMemo(() => {
     const map = new Map<string, "fraud" | "legitimate">();
     (reviews.data ?? []).forEach((r) => map.set(r.transaction_id, r.decision));
