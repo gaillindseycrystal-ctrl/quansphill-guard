@@ -20,6 +20,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sh
 import { supabase } from "@/integrations/supabase/client";
 import { useSession } from "@/hooks/useSession";
 import { demoScore } from "@/lib/scoring.functions";
+import { generateDemoStream } from "@/lib/demo-stream";
 import { INFERENCE_MS, MANUAL_LAG, ghs } from "@/lib/project-data";
 
 export const Route = createFileRoute("/")({
