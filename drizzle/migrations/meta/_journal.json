@@ -8,6 +8,13 @@
       "when": 1789913149941,
       "tag": "0000_fraud_monitor_core",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1789992785517,
+      "tag": "0001_restrict_reads_to_staff_and_admin_settings",
+      "breakpoints": true
     }
   ]
 }
