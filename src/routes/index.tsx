@@ -178,7 +178,7 @@ function LiveConsole() {
     : [];
 
   return (
-    <SiteLayout>
+    <SiteLayout showProjectFooter>
       <section className="grid gap-6 lg:grid-cols-[1.3fr_1fr] lg:items-center">
         <div>
           <h1 className="text-4xl font-semibold leading-tight sm:text-5xl">

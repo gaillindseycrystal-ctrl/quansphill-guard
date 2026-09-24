@@ -2,24 +2,34 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import { useState, type ReactNode } from "react";
 import { Menu, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useAdminStatus } from "@/hooks/useAdminStatus";
 import { useSession } from "@/hooks/useSession";
 import { supabase } from "@/integrations/supabase/client";
 import { PROJECT } from "@/lib/project-data";
 
 const NAV = [
-  { to: "/", label: "Live console" },
-  { to: "/results", label: "Results" },
-  { to: "/data", label: "Data" },
-  { to: "/system", label: "System" },
-  { to: "/score", label: "Score a transaction" },
-  { to: "/findings", label: "Findings" },
-  { to: "/reports", label: "Reports" },
+  { to: "/", label: "Live console", adminOnly: false },
+  { to: "/results", label: "Results", adminOnly: false },
+  { to: "/data", label: "Data", adminOnly: false },
+  { to: "/system", label: "System", adminOnly: false },
+  { to: "/score", label: "Score a transaction", adminOnly: false },
+  { to: "/findings", label: "Findings", adminOnly: false },
+  { to: "/reports", label: "Reports", adminOnly: false },
+  { to: "/admin", label: "Admin", adminOnly: true },
 ] as const;
 
-export function SiteLayout({ children }: { children: ReactNode }) {
+export function SiteLayout({
+  children,
+  showProjectFooter = false,
+}: {
+  children: ReactNode;
+  showProjectFooter?: boolean;
+}) {
   const { user } = useSession();
+  const adminStatus = useAdminStatus(Boolean(user));
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const navItems = NAV.filter((item) => !item.adminOnly || adminStatus.data?.isAdmin);
 
   async function signOut() {
     await supabase.auth.signOut();
@@ -38,7 +48,7 @@ export function SiteLayout({ children }: { children: ReactNode }) {
           </Link>
 
           <nav className="ml-auto hidden items-center gap-1 lg:flex">
-            {NAV.map((item) => (
+            {navItems.map((item) => (
               <Link
                 key={item.to}
                 to={item.to}
@@ -73,7 +83,7 @@ export function SiteLayout({ children }: { children: ReactNode }) {
 
         {open && (
           <nav className="flex flex-col gap-1 border-t border-border px-4 py-3 lg:hidden">
-            {NAV.map((item) => (
+            {navItems.map((item) => (
               <Link
                 key={item.to}
                 to={item.to}
@@ -89,18 +99,20 @@ export function SiteLayout({ children }: { children: ReactNode }) {
 
       <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6">{children}</main>
 
-      <footer className="no-print mt-12 border-t border-border">
-        <div className="mx-auto max-w-7xl px-4 py-8 text-sm text-muted-foreground sm:px-6">
-          <p className="font-medium text-foreground">{PROJECT.study}</p>
-          <p className="mt-1">
-            {PROJECT.institution} · {PROJECT.programme} · {PROJECT.date} · Supervisor:{" "}
-            {PROJECT.supervisor}
-          </p>
-          <p className="mt-1">
-            {PROJECT.team.map((m) => `${m.name} (${m.id})`).join(" · ")}
-          </p>
-        </div>
-      </footer>
+      {showProjectFooter && (
+        <footer className="no-print mt-12 border-t border-border">
+          <div className="mx-auto max-w-7xl px-4 py-8 text-sm text-muted-foreground sm:px-6">
+            <p className="font-medium text-foreground">{PROJECT.study}</p>
+            <p className="mt-1">
+              {PROJECT.institution} · {PROJECT.programme} · {PROJECT.date} · Supervisor:{" "}
+              {PROJECT.supervisor}
+            </p>
+            <p className="mt-1">
+              {PROJECT.team.map((m) => `${m.name} (${m.id})`).join(" · ")}
+            </p>
+          </div>
+        </footer>
+      )}
     </div>
   );
 }
