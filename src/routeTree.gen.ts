@@ -17,6 +17,7 @@ import { Route as FindingsRouteImport } from './routes/findings'
 import { Route as ResultsRouteImport } from './routes/results'
 import { Route as ScoreRouteImport } from './routes/score'
 import { Route as SystemRouteImport } from './routes/system'
+import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedReportsRouteImport } from './routes/_authenticated/reports'
 
 const IndexRoute = IndexRouteImport.update({
@@ -58,6 +59,11 @@ const SystemRoute = SystemRouteImport.update({
   path: '/system',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedReportsRoute = AuthenticatedReportsRouteImport.update({
   id: '/reports',
   path: '/reports',
@@ -72,6 +78,7 @@ export interface FileRoutesByFullPath {
   '/results': typeof ResultsRoute
   '/score': typeof ScoreRoute
   '/system': typeof SystemRoute
+  '/admin': typeof AuthenticatedAdminRoute
   '/reports': typeof AuthenticatedReportsRoute
 }
 export interface FileRoutesByTo {
@@ -82,6 +89,7 @@ export interface FileRoutesByTo {
   '/results': typeof ResultsRoute
   '/score': typeof ScoreRoute
   '/system': typeof SystemRoute
+  '/admin': typeof AuthenticatedAdminRoute
   '/reports': typeof AuthenticatedReportsRoute
 }
 export interface FileRoutesById {
@@ -94,6 +102,7 @@ export interface FileRoutesById {
   '/results': typeof ResultsRoute
   '/score': typeof ScoreRoute
   '/system': typeof SystemRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/reports': typeof AuthenticatedReportsRoute
 }
 export interface FileRouteTypes {
@@ -106,6 +115,7 @@ export interface FileRouteTypes {
     | '/results'
     | '/score'
     | '/system'
+    | '/admin'
     | '/reports'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -116,6 +126,7 @@ export interface FileRouteTypes {
     | '/results'
     | '/score'
     | '/system'
+    | '/admin'
     | '/reports'
   id:
     | '__root__'
@@ -127,6 +138,7 @@ export interface FileRouteTypes {
     | '/results'
     | '/score'
     | '/system'
+    | '/_authenticated/admin'
     | '/_authenticated/reports'
   fileRoutesById: FileRoutesById
 }
@@ -199,6 +211,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SystemRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/reports': {
       id: '/_authenticated/reports'
       path: '/reports'
@@ -210,10 +229,12 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
   AuthenticatedReportsRoute: typeof AuthenticatedReportsRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAdminRoute: AuthenticatedAdminRoute,
   AuthenticatedReportsRoute: AuthenticatedReportsRoute,
 }
 

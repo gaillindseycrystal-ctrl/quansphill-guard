@@ -38,6 +38,8 @@ export const Route = createFileRoute("/")({
         content:
           "Threshold-tuned fraud scoring for mobile money transactions, with staff review built in.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: LiveConsole,
@@ -178,7 +180,7 @@ function LiveConsole() {
     : [];
 
   return (
-    <SiteLayout>
+    <SiteLayout showProjectFooter>
       <section className="grid gap-6 lg:grid-cols-[1.3fr_1fr] lg:items-center">
         <div>
           <h1 className="text-4xl font-semibold leading-tight sm:text-5xl">

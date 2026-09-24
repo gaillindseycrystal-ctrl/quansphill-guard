@@ -20,6 +20,8 @@ export const Route = createFileRoute("/auth")({
       },
       { property: "og:title", content: "Staff sign in · Quansphill Fraud Monitor" },
       { property: "og:description", content: "Sign in to review flagged mobile money activity." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: AuthPage,
@@ -60,13 +62,13 @@ function AuthPage() {
 
   return (
     <SiteLayout>
-      <div className="mx-auto max-w-md">
-        <h1 className="text-3xl font-semibold">Staff sign in</h1>
-        <p className="mt-2 text-muted-foreground">
+      <div className="mx-auto max-w-md py-4 sm:py-8">
+        <h1 className="text-4xl font-semibold leading-tight">Staff sign in</h1>
+        <p className="mt-3 text-muted-foreground">
           Only signed-in staff can confirm or clear transactions and open the reports page.
         </p>
 
-        <Card className="mt-6">
+        <Card className="mt-8">
           <CardHeader>
             <CardTitle className="text-base">
               {mode === "signin" ? "Sign in" : "Create a staff account"}

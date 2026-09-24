@@ -15,6 +15,13 @@
       "when": 1789992785517,
       "tag": "0001_restrict_reads_to_staff_and_admin_settings",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1790255413387,
+      "tag": "0002_secure_admin_role_management",
+      "breakpoints": true
     }
   ]
 }

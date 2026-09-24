@@ -17,6 +17,8 @@ export const Route = createFileRoute("/data")({
         property: "og:description",
         content: "Cleaning, splitting and balancing the Quansphill transaction dataset.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: DataPage,

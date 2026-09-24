@@ -33,6 +33,8 @@ export const Route = createFileRoute("/results")({
         property: "og:description",
         content: "How the three fraud detection models compared, and why accuracy misleads here.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Results,
