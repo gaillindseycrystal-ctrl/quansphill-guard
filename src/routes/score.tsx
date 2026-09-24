@@ -42,6 +42,8 @@ export const Route = createFileRoute("/score")({
         property: "og:description",
         content: "Try the scoring service on a single transaction.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: ScorePage,

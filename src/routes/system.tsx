@@ -18,6 +18,8 @@ export const Route = createFileRoute("/system")({
         property: "og:description",
         content: "How data moves from the transaction store to scored alerts on screen.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: SystemPage,

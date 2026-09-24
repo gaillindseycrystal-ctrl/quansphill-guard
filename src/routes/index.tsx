@@ -38,6 +38,8 @@ export const Route = createFileRoute("/")({
         content:
           "Threshold-tuned fraud scoring for mobile money transactions, with staff review built in.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: LiveConsole,

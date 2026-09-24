@@ -30,6 +30,8 @@ export const Route = createFileRoute("/_authenticated/reports")({
       },
       { property: "og:title", content: "Reports · Quansphill Fraud Monitor" },
       { property: "og:description", content: "Flagged activity summarised for a chosen date range." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Reports,

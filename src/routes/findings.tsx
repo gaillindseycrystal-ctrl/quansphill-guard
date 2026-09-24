@@ -30,6 +30,8 @@ export const Route = createFileRoute("/findings")({
         property: "og:description",
         content: "What the study concluded about detecting mobile money fraud at Quansphill.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Findings,

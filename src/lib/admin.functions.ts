@@ -1,17 +1,15 @@
 import { createServerFn } from "@tanstack/react-start";
+import type { SupabaseClient } from "@supabase/supabase-js";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import type { Database } from "@/integrations/supabase/types";
 
 const emailSchema = z.string().trim().email().transform((email) => email.toLowerCase());
 const removeSchema = z.object({ userId: z.string().uuid() });
 
-type AuthenticatedContext = {
-  supabase: Parameters<Parameters<typeof requireSupabaseAuth>[0]>[0] extends never ? never : never;
-};
-
-async function assertAdmin(context: { supabase: any; userId: string }) {
-  const { data, error } = await context.supabase.rpc("has_role", {
-    _user_id: context.userId,
+async function assertAdmin(supabase: SupabaseClient<Database>, userId: string) {
+  const { data, error } = await supabase.rpc("has_role", {
+    _user_id: userId,
     _role: "admin",
   });
   if (error || !data) throw new Error("Administrator access is required.");
@@ -45,7 +43,7 @@ export const getAdminAccess = createServerFn({ method: "GET" })
 export const listAdmins = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
-    await assertAdmin(context);
+    await assertAdmin(context.supabase, context.userId);
     const { data: roles, error } = await context.supabase
       .from("user_roles")
       .select("user_id, created_at")
@@ -73,7 +71,7 @@ export const addAdmin = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((data: unknown) => z.object({ email: emailSchema }).parse(data))
   .handler(async ({ data, context }) => {
-    await assertAdmin(context);
+    await assertAdmin(context.supabase, context.userId);
     const user = await findUserByEmail(data.email);
     if (!user) throw new Error("No existing staff account uses that email address.");
 
@@ -90,7 +88,7 @@ export const removeAdmin = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((data: unknown) => removeSchema.parse(data))
   .handler(async ({ data, context }) => {
-    await assertAdmin(context);
+    await assertAdmin(context.supabase, context.userId);
     const { data: deleted, error } = await context.supabase
       .from("user_roles")
       .delete()
